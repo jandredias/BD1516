@@ -1,0 +1,49 @@
+ro -> ρ
+pi -> π
+sigma -> σ
+intersecçao -> ∩
+and -> Λ
+4.1
+  ρ(TOF, TypesOfRecord)
+  ρ(U, User)
+  π TOF.name (σ(TOF.email = U.email Λ U.email = "Manel@notebook.pt" Λ TOF.status = "visible"))
+
+4.2
+  ρ(L, Login)
+  ρ(U, User)
+  π U.email (σ(L.email = U.email Λ l.status = "fail" ))
+
+4.3
+  ρ(P, Pages)
+  ρ(U, User)
+  ρ(R, Records)
+  π U.birthday σ(U.email = P.email Λ U.email = R.email Λ ((R.name = "facebook" Λ R.status = "visible") V (P.name = "facebook" Λ P.status = "visible")) 
+  
+5.1 Quais o nomes dos tipos de registos de um determinado utilizador (“eg. Manel@notebook.pt) ?
+
+  SELECT TOF.name
+  FROM TypesOfRecord TOF , User U
+  WHERE TOF.email = U.email AND U.email = "Manel@notebook.pt" AND TOF.status = "visible"
+
+5.2 Quais as pessoas que falharam pelo menos um login de acesso ao bloco de notas ?
+
+  SELECT DISTINCT u.EMAIL
+  FROM user u, login l
+  WHERE u.email = l.email AND l.status = "fail" 
+
+5.3 Qual a data de nascimento das pessoas que têm páginas e registos com o nome “facebook” ?
+
+  SELECT u.birthday
+  FROM user u , pages p , records r
+  WHERE u.email = p.email AND
+        u.email = r.email AND 
+        ((p.name = "facebook" and p.status = "visible") OR (r.name = "facebook" and r.status = "visible"))
+
+								      \
+    /* Este vai incluir datas de aniversario duplicadas para     ===== \ 
+   /* pessoas que tenham um nome E uma pagina chamados facebook  ===== / SELECT disctint? What if we had two User with same birthday ID? 
+  /* WHERE .. EXISTS p.name ?? */				      /
+  
+  
+  
+ 

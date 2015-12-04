@@ -1,0 +1,154 @@
+1 a)
+  A  -/> B ( X -> 2 ; X -> 3)
+  A  -/> C ( Y -> C ; Y -> B)
+  B  -/> A ( 1 -> Z ; 1 -> X)
+  C  -/> A ( C -> Y ; C -> Z)
+  B  -/> C ( 3 -> A ; 3 -> C)
+  C  -/> B ( A -> 2 ; A -> 3)
+  AB -/> C ( Y3 -> C ; Y3 -> B)
+  AC -/> B ( XA -> 2 ; XA -> 3)
+  BC -/> A ( 1C -> Z ; 1C -> X)
+
+  b)
+    Nao existem dependencias funcionais contra os atributos (porque encontramos contra exemplo p/ todos os possiveis)
+
+2 a)
+    para ser verdade AB -> ABCDE
+    e nao pode acontecer:
+      A -> ABCDE
+      B -> ABCDE
+
+  b)        /               ||
+    e1 c1 \/                ||
+                            ||   =======     \
+            /               ||   =======      |   Concluimos que e -> c
+    e2 c1 \/                ||   =======     /
+            /               ||
+    e2 c2 \/                ||
+
+
+    mas c nao implica e (isto e, a partir de qualquer valor chegamos a c)
+              devido a e1 c1 /
+                       e1 c2
+
+3 a)
+  Algortitmo |  quanto o lado esquerdo esta no result adiciono o lado direito
+  (AC)+ = ?
+  result = AC
+  1ª iter
+    - AC -> D => result = { A,C,D }
+    - AB -> E s/alter (B nao pertence ao result)
+    - E  -> C s/alter
+  2ª iter
+    - AC -> D s/alter (ja la esta)
+    - AB -> E s/alter (B nao pertence ao result)
+    - E  -> C s/alter (E nao pertence ao result)
+  Ao fim da iter nao houve alteraçao logo acabou
+
+  (AB)+ = ?
+  result = {A,B}
+  1ªiter
+    - AC -> D s/alter
+    - AB -> E => result = {A,B,E}
+    - E  -> C => result = {A,B,C,E}
+  2ªiter
+    - AC -> D => result = {A,B,C,D,E}
+    - s/alt
+    - s/alt
+  fim alg
+  (AB)+ = result
+
+  Como AB => {A,B,C,D,E}  entao AC é candidato a chave
+
+  (E)+ = ?
+
+  RESULT = E
+  1º iter
+    - AC -> D s/alter
+    - AB -> E s/alter
+    - E  -> C => {E,C}
+  2º iter
+    s/alter
+  (E)+ = {E,C}
+
+Como {AB} => {ABCDE} {AB} é super chave
+
+
+  b)
+    AB sera chave se (A)+ != ABCDE && (B)+ != ABCDE
+
+        (A)+ = A  | = \  Estamos na presença
+        (B)+ = B  | = /       de chave
+
+4 a)
+                   _
+    a1 b1 c1 d1 e1  |
+    a1 b2 c1 d2 e1 _|    R
+
+  R1
+      a1 b1 c1
+      a1 b2 c1
+  R2
+      c1 d1 e1
+      c1 d2 e1
+
+  R1 |X| R2 = R
+
+    a1 b1 c1 d1 e1
+    a1 b1 c1 d2 e1
+    a1 b2 c1 d1 e1
+    a1 b2 c1 d2 e1
+  b) C -> AB
+       ou
+     C -> DE
+  nestes casos nao ha perdas
+
+5
+  a)
+    E1
+
+    (B)+  = BD
+    (AB)+ = ABCD   ===> Automaticamente super chave
+
+    e (A)+ = A
+    logo AB é chave candidata
+
+    E2
+
+    (AB)+ = ABCDE
+    (E)+  = ABCDE
+    (C)+  = CD
+
+    AB => é super chave
+    E => é super chave
+
+    chaves candidatas:
+        AB , E
+        porque nao conseguimos chegar a ABCDE a partir de A ou B isolado
+
+    1ª Forma Normal -> atributos serem escalares. Se fossem atributos complexos ja nao era
+    2ª Forma Normal -> 1ª + qq atributo nao chave é completamente dependente de todos os atributos chave
+                              (Nao existem dependencias com parte da chave)
+    3ª FOrma Normal -> 2ª + e que nao existam dependencias entre atributos nao chave
+                            EX: AB(chave) -> D  , D -> E (ja nao esta)
+    Boyce Codd      -> Todos os determinantes sao chave
+
+  b)
+    E1 - 1FormulaNOrmal
+    E2 - 1FN 2FN
+        3FNx C->D (dependencias entre atributos nao chave)
+
+  c)
+    E1.1 (ABC) ab->c
+    E1.2 (BD)
+
+
+9
+  a)  por escala na disciplina
+      ter um conceito de cidade que inclua morada_cidade e  cod_postal
+  c)
+      (Sobre modelo nao alterado)
+      Aluno 2FN
+      Disciplina Boyce Codd
+      Inscrito 1FN
+      

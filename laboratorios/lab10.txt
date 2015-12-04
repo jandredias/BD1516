@@ -1,0 +1,54 @@
+1)  SELECT week_day_name, avg(reading)
+    FROM meter_readings NATURAL JOIN date_dimension
+    GROUP BY week_day_name
+    ORDER BY avg(reading) DESC
+    ;
+
+2)  SELECT week_number, building_name, avg(reading)
+    FROM meter_readings NATURAL JOIN date_dimension NATURAL JOIN building_dimension
+    WHERE week_number >= 50
+    GROUP BY week_number,building_name
+    ;
+
+    /* Already does this, it orders by the first in group by */
+    ORDER BY week_number
+
+3)  SELECT week_number, avg(reading)
+    FROM meter_readings NATURAL JOIN date_dimension
+    WHERE week_number >= 50
+    GROUP BY week_number
+    ;
+
+4)  SELECT building_name, avg(reading)
+    FROM meter_readings NATURAL JOIN building_dimension
+    GROUP BY building_name
+    ORDER BY avg(reading) DESC
+    ;
+
+5)  SELECT building_name, week_day_name, avg(reading)
+    FROM meter_readings NATURAL JOIN building_dimension NATURAL JOIN date_dimension
+    GROUP BY building_name, week_day_name
+    ORDER BY building_name, avg(reading) DESC, week_day_name
+    ;
+
+6)  SELECT building_name, day_period, avg(reading)
+    FROM meter_readings NATURAL JOIN building_dimension NATURAL JOIN time_dimension
+    GROUP BY building_name, day_period
+    ORDER BY building_name, avg(reading) DESC, day_period
+    ;
+
+7)  SELECT building_name, day_period, hour_of_day, avg(reading)
+    FROM meter_readings NATURAL JOIN building_dimension NATURAL JOIN time_dimension
+    GROUP BY day_period WITH ROLLUP , building_name
+    ORDER BY building_name, avg(reading) DESC, day_period
+    ;
+
+9)  SELECT day_period
+    FROM results
+    WHERE hour_of_day IS NULL AND building_name IS NOT NULL AND day_period IS NOT NULL
+    GROUP BY day_period
+    HAVING avg(avg_reading) >= ALL
+    ( SELECT avg_reading
+      FROM results
+      WHERE building_name IS NULL)
+    ;
