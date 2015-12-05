@@ -1,32 +1,98 @@
 /* Quais s~ao os utilizadores que falharam o login mais vezes do que tiveram sucesso? */
-/*Check again..*/
-SELECT DISTINCT COUNT(*), userid
+/*
+DROP TABLE if EXISTS
+falhas_login;
+CREATE TEMPORARY TABLE IF NOT EXISTS
+falhas_login
+SELECT userid, COUNT(*) as failures
 FROM login l1
 WHERE sucesso=0
-GROUP BY userid
-HAVING COUNT(*) > (
-	SELECT COUNT(*)
-	FROM login l2
-	WHERE sucesso=1 AND l1.userid=l2.userid
-	GROUP BY userid);
+GROUP BY userid;
 
-/* Quais s~ao os registos          que aparecem em todas as paginas de um utilizador?*/
-/*FIXME check if active maybe!!!*/
+DROP TABLE if EXISTS
+total_login;
+CREATE TEMPORARY TABLE IF NOT EXISTS
+total_login
+SELECT userid, COUNT(*) as total
+FROM login l1
+GROUP BY userid;
+
+SELECT tot.userid
+FROM total_login tot , falhas_login fail
+WHERE tot.userid = fail.userid
+AND fail.failures > (tot.total-fail.failures);
+*/
+
+
+SELECT DISTINCT l1.userid
+FROM login l1
+WHERE (
+	SELECT COUNT(l2.sucesso)
+	FROM login l2
+	WHERE l2.sucesso = 0 AND l2.userid = l1.userid) > (
+		SELECT COUNT(l3.sucesso)
+		FROM login l3
+		WHERE l3.sucesso = 1 AND l3.userid = l1.userid);
+
+/*  IGUAL MAS SEM TABS, IDEAL PARA TESTAR NO mysql
+
+SELECT DISTINCT l1.userid
+FROM login l1
+WHERE (
+SELECT COUNT(l2.sucesso)
+FROM login l2
+WHERE l2.sucesso = 0 AND l2.userid = l1.userid) > (
+SELECT COUNT(l3.sucesso)
+FROM login l3
+WHERE l3.sucesso = 1 AND l3.userid = l1.userid);
+
+*/
+
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+
+/* Quais sao os registos          que aparecem em todas as paginas de um utilizador?*/
 SELECT r.regcounter
 FROM registo r
-WHERE
+WHERE r.ativo=1 AND
 -- if we want a particular user
 -- r.userid=33333 and
 NOT EXISTS (
 	SELECT p.pagecounter
 	FROM pagina p
-	WHERE p.userid=r.userid and NOT EXISTS (
+	WHERE p.userid=r.userid
+	AND p.ativa=1
+	AND NOT EXISTS (
 	SELECT rp.pageid
 		FROM reg_pag rp
 		WHERE rp.pageid=p.pagecounter
+		AND   rp.ativa=1
 		AND   rp.regid=r.regcounter));
 
 /*  IGUAL MAS SEM TABS, IDEAL PARA TESTAR NO mysql
+SELECT r.regcounter
+FROM registo r
+WHERE r.ativo=1 AND
+-- if we want a particular user
+-- r.userid=33333 and
+NOT EXISTS (
+SELECT p.pagecounter
+FROM pagina p
+WHERE p.userid=r.userid
+AND p.ativa=1
+AND NOT EXISTS (
+SELECT rp.pageid
+FROM reg_pag rp
+WHERE rp.pageid=p.pagecounter
+AND   rp.ativa=1
+AND   rp.regid=r.regcounter))
+order by r.regcounter;
+*/
+
+/*  IGUAL MAS SEM ver se registo activo
 SELECT r.regcounter
 FROM registo r
 WHERE
@@ -44,6 +110,10 @@ order by r.regcounter
 ;
 
 */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /*Quais os utilizadores que tem o maior numero medio de registos por pagina?*/
 DROP TABLE if EXISTS
@@ -64,10 +134,10 @@ FROM numero_reg_cada_pag nrcp
 GROUP BY nrcp.userid
 HAVING media > 0
 ORDER BY media DESC;
-*/
 
 
-/* Alternativo */
+
+/* --------------------------- Alternativa ---------------------------------- */
 DROP TABLE if EXISTS
 numero_reg;
 CREATE TEMPORARY TABLE IF NOT EXISTS
@@ -101,7 +171,10 @@ numero_pag;
 DROP TABLE if EXISTS
 numero_reg;
 
-
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 /* Quais os utilizadores que, em todas as suas paginas, tem registos de todos os
 tipos de registos que criaram? */
 DROP TABLE if EXISTS
@@ -151,3 +224,4 @@ SELECT userid
 from join_pag_tip_reg jptr
 group by userid
 having sum(numero_tipos_reg_pagina<>numero_registos_user)=0;
+/* -------------------------------------------------------------------------- */
