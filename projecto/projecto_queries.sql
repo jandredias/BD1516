@@ -116,21 +116,15 @@ order by r.regcounter
 /* -------------------------------------------------------------------------- */
 
 /*Quais os utilizadores que tem o maior numero medio de registos por pagina?*/
-DROP TABLE if EXISTS
-numero_reg_cada_pag;
-CREATE TEMPORARY TABLE IF NOT EXISTS
-numero_reg_cada_pag
-select p.userid, p.pagecounter,sum(rp.ativa) as numero_registos
-from pagina p left outer join reg_pag rp on (p.pagecounter=rp.pageid)
-where p.ativa=1
-/* for specific user */
--- and p.userid=439
-group by p.userid, p.pagecounter;
-
 
 /* avg did not take into account the nulls */
 SELECT nrcp.userid, sum(numero_registos)/count(*) /*avg(numero_registos)*/ as media
-FROM numero_reg_cada_pag nrcp
+FROM (select p.userid, p.pagecounter,sum(rp.ativa) as numero_registos
+			from pagina p left outer join reg_pag rp on (p.pagecounter=rp.pageid)
+			where p.ativa=1
+			/* for specific user */
+			-- and p.userid=439
+			group by p.userid, p.pagecounter) nrcp
 GROUP BY nrcp.userid
 HAVING media > 0
 ORDER BY media DESC;
