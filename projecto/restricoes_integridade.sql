@@ -20,7 +20,7 @@ END //
 Delimiter ;
 
 
-call occurences_in_table('pagina' , '151489');
+call occurences_in_table('pagina' , '151489', value);
 
 
 drop function IF EXISTS consulting;
@@ -36,22 +36,42 @@ Delimiter ;
 
 
 
+
+
 Delimiter //
-CREATE OR REPLACE TRIGGER upd_tables BEFORE INSERT OR UPDATE ON pagina
+CREATE TRIGGER upd_tables BEFORE UPDATE ON pagina
 FOR EACH ROW
 BEGIN
   DECLARE rowsCount int;
-  SELECT COUNT(*)
-  FROM pagina
-  WHERE idseq is :new.idseq INTO rowsCount;
-     IF rowsCount > 0
-  THEN
-      RAISE_APPLICATION_ERROR(-20101, 'A idseq with the same number currently exists.');
-      ROLLBACK;
+  DECLARE value1     int;
+  DECLARE value2     int;
+  DECLARE value3     int;
+  DECLARE value4     int;
+  DECLARE value5     int;
+  DECLARE msg VARCHAR(255);
+  call occurences_in_table('pagina'       , new.idseq, value1);
+  set rowsCount = rowsCount + value1;
+  call occurences_in_table('tipo_registo' , new.idseq, value2);
+  set rowsCount = rowsCount + value2;
+  call occurences_in_table('registo'      , new.idseq, value3);
+  set rowsCount = rowsCount + value3;
+  call occurences_in_table('campo'        , new.idseq, value4);
+  set rowsCount = rowsCount + value4;
+  call occurences_in_table('valor'        , new.idseq, value5);
+  set rowsCount = rowsCount + value5;
+
+
+  IF rowsCount > 0 THEN
+  	  set msg = "DIE: You broke the rules... I will now Smite you, hold still...";
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
+      /*ROLLBACK;*/
   END IF;
 END //
 Delimiter ;
 
+  SELECT COUNT(*)
+  FROM pagina
+  WHERE idseq is :new.idseq INTO rowsCount;
 
 -- CHECK THIS TABLES
 tipo_registo
