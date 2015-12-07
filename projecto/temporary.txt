@@ -1,4 +1,5 @@
 Para ir buscar o ultimo pagecounter e incrementar 1 : 
+
 SELECT pagecounter + 1 
 FROM(
     SELECT userid, pagecounter, nome, idseq, ativa 
@@ -6,3 +7,14 @@ FROM(
     WHERE pagecounter >= ALL(
 	  SELECT pagecounter
 	  FROM pagina)) a;
+	  
+	  
+	  
+Para ir buscar o ultimo sequence number:
+SELECT contador_sequencia
+FROM(
+    SELECT * 
+    FROM sequencia 
+    WHERE contador_sequencia >= ALL(
+		  SELECT contador_sequencia
+		  FROM sequencia)) a;
