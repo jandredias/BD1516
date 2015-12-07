@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS utilizador (
     pais VARCHAR(45) NOT NULL,
     categoria VARCHAR(45) NOT NULL,
 PRIMARY KEY (userid),
-UNIQUE INDEX email_UNIQUE (email) 
+UNIQUE INDEX email_UNIQUE (email)
 );
 
 CREATE TABLE IF NOT EXISTS  login (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS  login (
     sucesso TINYINT(1) NOT NULL,
     moment TIMESTAMP NOT NULL,
 PRIMARY KEY (contador_login),
-FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE 
+FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE
 ON UPDATE CASCADE
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS sequencia (
     moment TIMESTAMP NOT NULL,
     userid INT NOT NULL,
 PRIMARY KEY (contador_sequencia),
-FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE 
+FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE
 ON UPDATE CASCADE
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS  tipo_registo (
     idseq INT NULL,
     ptypecnt INT,
 PRIMARY KEY (userid, typecnt),
-FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE  
+FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE
 ON UPDATE CASCADE,
 FOREIGN KEY (userid, ptypecnt) REFERENCES tipo_registo (userid, typecnt),
 FOREIGN KEY (idseq) REFERENCES  sequencia (contador_sequencia)
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS registo (
 PRIMARY KEY (userid, regcounter, typecounter),
 FOREIGN KEY (idseq) REFERENCES  sequencia (contador_sequencia),
 FOREIGN KEY (userid , typecounter) REFERENCES tipo_registo (userid ,  typecnt),
-FOREIGN KEY (userid, pregcounter, typecounter) 
+FOREIGN KEY (userid, pregcounter, typecounter)
 REFERENCES registo (userid, regcounter, typecounter)
 );
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS pagina (
 PRIMARY KEY (userid, pagecounter) ,
 FOREIGN KEY (userid) REFERENCES utilizador (userid) ON DELETE CASCADE  ON UPDATE CASCADE,
 FOREIGN KEY (idseq) REFERENCES  sequencia (contador_sequencia),
-FOREIGN KEY (userid, ppagecounter) REFERENCES pagina (userid, pagecounter) 
+FOREIGN KEY (userid, ppagecounter) REFERENCES pagina (userid, pagecounter)
 );
 
 CREATE TABLE IF NOT EXISTS campo (
@@ -104,9 +104,9 @@ ON DELETE CASCADE  ON UPDATE CASCADE,
 FOREIGN KEY (userid, regid, typeid) REFERENCES registo (userid , regcounter,typecounter)
 ON DELETE CASCADE  ON UPDATE CASCADE,
 FOREIGN KEY (idseq) REFERENCES  sequencia (contador_sequencia),
-FOREIGN KEY (userid, regid, typeid, pcampoid) REFERENCES valor (userid, regid, typeid, campoid) 
+FOREIGN KEY (userid, regid, typeid, pcampoid) REFERENCES valor (userid, regid, typeid, campoid)
  );
- 
+
 CREATE TABLE IF NOT EXISTS reg_pag(
     idregpag INT NOT NULL  AUTO_INCREMENT,
     userid INT NOT NULL,
@@ -124,8 +124,3 @@ ON DELETE CASCADE  ON UPDATE CASCADE,
 FOREIGN KEY (idseq) REFERENCES  sequencia (contador_sequencia),
 FOREIGN KEY (pidregpag) REFERENCES  reg_pag (idregpag)
  );
-
-
-
- 
-
