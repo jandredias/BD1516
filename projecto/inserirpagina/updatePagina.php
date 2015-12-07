@@ -17,8 +17,9 @@
 		echo($userid);
 		echo($email);
 		echo($nome);
+		$date=(date('Y-m-d H:i:s'));
 		
-        $sql = "INSERT INTO sequencia(userid,moment) VALUES ($userid,'6969-69-69 69:69:69') ;";
+        $sql = "INSERT INTO sequencia(userid,moment) VALUES ($userid,'$date') ;";
 		$db->query($sql);
 		$sql2 = "select contador_sequencia from sequencia where contador_sequencia >= ALL(select contador_sequencia from sequencia);";
         $contador_seq = $db->query($sql2);
