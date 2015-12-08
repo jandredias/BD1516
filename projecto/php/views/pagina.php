@@ -18,9 +18,18 @@ global $connection;
           $userid = $this->user->userid;
           $email = $this->user->email;
           $pid = $_GET['pid'];
-          //TODO
-            //FIXME REMOVE PAGE
-          //END TODO
+          $date=(date('Y-m-d H:i:s'));
+		$connection->begintransaction();
+          echo($date);
+			$query = $connection->prepare("INSERT INTO sequencia(userid,moment)
+										   VALUES (:userid,:date);");
+			$query->execute(array(':userid' => $userid,
+								  ':date' => $date));
+			echo('ola');
+		  $query = $connection->prepare("UPDATE pagina SET ativa=0 WHERE userid=? AND pagecounter=?;");
+          $query->execute(array($userid,$pid));
+          $connection->commit();
+          
            ?>
         <?php case 'list': ?>
         <?php
