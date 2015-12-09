@@ -48,6 +48,5 @@ class Pagina {
             rp.ativa=1;");
 
     $query->execute(array(':userid' => $this->userid, ':pageid' => $this->pageid));
-    var_dump($query->fetchAll());
   }
 }
