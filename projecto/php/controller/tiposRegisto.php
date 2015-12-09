@@ -9,6 +9,14 @@ if($_GET['page'] == "tiposRegisto" && isset($_GET['accao'])){
       if(isset($_GET['tid']))
         $this->user->removeTipoRegisto($_GET['tid']);
       break;
+    case "adicionaCampo":
+      if(isset($_POST['nomeCampo']) && isset($_POST['tid'])){
+        $campo_nome = $_POST['nomeCampo'];
+        $tid = $_POST['tid'];
+        $tipo = new TipoRegisto($this->user->userid, $tid);
+        $tipo->insereCampo($campo_nome);
+      }
+      break;
     default:
       break;
   }

@@ -4,7 +4,7 @@ class Campo{
   private $userid;
   private $typecnt;
   private $campocnt;
-  private $nome;
+  public $nome;
 
   function __construct($userid, $typecnt, $campocnt){
     global $connection;
@@ -27,7 +27,7 @@ class Campo{
   }
   public function __set($property, $value){
     if(property_exists($this, $property))
-      $this->$property = $value
+      $this->$property = $value;
   }
 
 }
