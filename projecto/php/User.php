@@ -102,27 +102,43 @@ class User {
   public function adicionaTipoRegisto($nome){
     global $connection;
     $connection->begintransaction();
-
-    $seqid = $this->sequencia();
-
     $query = $connection->prepare(
-      "SELECT typecnt + 1 AS pg
-       FROM(
-         SELECT typecnt
-         FROM tipo_registo
-         WHERE typecnt >= ALL(
-           SELECT typecnt FROM tipo_registo)) naoserverparanadaestealias;");
+      "SELECT COUNT(*)
+       FROM tipo_registo
+       WHERE userid=:userid AND
+             nome=:nome");
+    $query->execute(array(':userid' => $this->userid, ":nome" => $nome));
+    $result = $query->fetch();
+    $result = $result[0];
+    if($result == 0){//Temos de inserir um registo novo
+      $seqid = $this->sequencia();
+      $query = $connection->prepare(
+        "SELECT typecnt + 1 AS pg
+         FROM(
+           SELECT typecnt
+           FROM tipo_registo
+           WHERE typecnt >= ALL(
+             SELECT typecnt FROM tipo_registo)) naoserverparanadaestealias;");
 
-    $query->execute();
-    $type_counter = $query->fetch()[0];
+      $query->execute();
+      $type_counter = $query->fetch()[0];
 
-    $query = $connection->prepare(
-    "INSERT INTO tipo_registo(userid,typecnt,nome,ativo,idseq)
-    VALUES (:userid, :typecnt, :nome, 1, :idseq);");
-    $query->execute(array(':userid' => $this->userid,
-                          ':typecnt' => $type_counter,
-                          ':nome' => $nome,
-                          ':idseq' => $seqid));
+      $query = $connection->prepare(
+      "INSERT INTO tipo_registo(userid,typecnt,nome,ativo,idseq)
+      VALUES (:userid, :typecnt, :nome, 1, :idseq);");
+      $query->execute(array(':userid' => $this->userid,
+                            ':typecnt' => $type_counter,
+                            ':nome' => $nome,
+                            ':idseq' => $seqid));
+    }else{
+      $query = $connection->prepare(
+        "UPDATE tipo_registo
+         SET ativo=1
+         WHERE userid=:userid AND
+               nome=:nome AND
+               ptypecnt IS NULL;");
+      $query->execute(array(':userid' => $this->userid, ":nome" => $nome));
+    }
     $connection->commit();
   }
   public function adicionaRegisto($nome){
