@@ -21,7 +21,7 @@
           <!-- Navigation. We hide it in small screens. -->
           <nav class="mdl-navigation mdl-layout--large-screen-only">
             <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=pagina" <?php } ?>>Página</a>
-            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=tiposDeRegisto"  <?php } ?>>Tipos de Registo</a>
+            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=tiposRegisto"  <?php } ?>>Tipos de Registo</a>
             <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=perfil" <?php } ?>>O meu perfil</a>
             <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=logout" <?php } ?>>Terminar sessão</a>
           </nav>
@@ -31,13 +31,15 @@
     <!-- END OF HEADER -->
     <!-- MAIN CONTENT -->
     <main class="mdl-layout__content" style="padding-top:64px;">
-      <?php //echo "SESSION: "; var_dump($_SESSION); echo "<br>POST: "; var_dump($_POST); echo "<br>GET: "; var_dump($_GET); ?>
       <?php  switch($_GET['page']){
         case 'login':
           include "login.php";
           break;
         case 'pagina':
           include "pagina.php";
+          break;
+        case 'tiposRegisto':
+          include 'tiposRegisto.php';
           break;
         case 'perfil':
           include "perfil.php";

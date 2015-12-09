@@ -11,7 +11,7 @@ class Registo {
   public function __construct($userid, $regid){
     $this->userid = $userid;
     $this->redig  = $regid;
-    
+
     //TODO
     //SELECT FROM DATABASE
   }
@@ -24,3 +24,4 @@ class Registo {
     if(property_exists($this, $property))
       $this->$property = $value
   }
+}

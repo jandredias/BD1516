@@ -6,6 +6,9 @@ define("_BD1516",'');
 function __autoload($class_name) {
   include $class_name . '.php';
 }
+if(!isset($_GET['page'])){
+  $_GET['page'] = "logout";
+}
 try{
   $application = new App();
   $application->execute();

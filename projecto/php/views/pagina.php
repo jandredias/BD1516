@@ -19,17 +19,22 @@ global $connection;
           $email = $this->user->email;
           $pid = $_GET['pid'];
           $date=(date('Y-m-d H:i:s'));
-		$connection->begintransaction();
-          echo($date);
-			$query = $connection->prepare("INSERT INTO sequencia(userid,moment)
-										   VALUES (:userid,:date);");
-			$query->execute(array(':userid' => $userid,
-								  ':date' => $date));
-			echo('ola');
-		  $query = $connection->prepare("UPDATE pagina SET ativa=0 WHERE userid=? AND pagecounter=?;");
-          $query->execute(array($userid,$pid));
+          /* BEGIN TRANSACTION */
+	        $connection->begintransaction();
+          /*$query = $connection->prepare(
+            "INSERT INTO sequencia(userid,moment)
+             VALUES (:userid,:date);");
+          $query->execute(array(':userid' => $userid, ':date' => $date));
+          */
+          $query = $connection->prepare(
+            "UPDATE pagina
+             SET ativa=0
+             WHERE userid=:userid
+             AND pagecounter=:pagecounter;");
+          $query->execute(array(':userid' => $userid,':pagecounter' => $pid));
+
           $connection->commit();
-          
+          /* END TRANSACTION */
            ?>
         <?php case 'list': ?>
         <?php
