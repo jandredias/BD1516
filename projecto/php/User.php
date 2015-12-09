@@ -183,7 +183,59 @@ class User {
     }
     $connection->commit();
   }
-  public function adicionaRegisto($nome, $tipo){
+  public function adicionaRegisto($nome, $typeid){
+    global $connection;
+    $connection->begintransaction();
+    $query = $connection->prepare(
+      "SELECT COUNT(*)
+       FROM registo
+       WHERE userid=:userid AND
+             typecounter=:typeid AND
+             nome=:nome");
+    $query->execute(array(':userid' => $this->userid, ':typeid' => $typeid,":nome" => $nome));
+    $result = $query->fetch();
+    $result = $result[0];
+    if($result == 0){//Temos de inserir um registo novo
+
+
+    /*regcounter */
+    $query = $connection->prepare(
+      "SELECT regcounter + 1 AS pg
+       FROM(
+         SELECT regcounter
+         FROM registo
+         WHERE regcounter >= ALL(
+           SELECT regcounter FROM registo)) naoserverparanadaestealias;");
+
+    $query->execute();
+    $regcounter = $query->fetch()[0];
+    $seqid = $this->sequencia();
+
+    /* the real insert */
+    $query = $connection->prepare(
+    "INSERT INTO registo(userid,typecounter,regcounter,nome,ativo,idseq)
+    VALUES (:userid, :typecnt, :regcounter, :nome, 1, :idseq);");
+    $query->execute(array(':userid' => $this->userid,
+                          ':typecnt' => $typeid,
+                          ':regcounter' => $regcounter,
+                          ':nome' => $nome,
+                          ':idseq' => $seqid));
+
+
+
+    }else{
+      $query = $connection->prepare(
+        "UPDATE registo
+         SET ativo=1
+         WHERE userid=:userid      AND
+               typecounter=:typeid AND
+               nome=:nome          AND
+               pregcounter IS NULL;");
+      $query->execute(array(':userid' => $this->userid, ':typeid' => $typeid,":nome" => $nome));
+    }
+    $connection->commit();
+  }
+  public function adicionaValor($campo,$tipoRegisto,$nomeRegisto,$valor){
     //TODO
   }
   public function adicionaCampo($tipoRegisto, $nome){
