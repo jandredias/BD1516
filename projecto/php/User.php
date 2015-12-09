@@ -197,7 +197,6 @@ class User {
     $result = $result[0];
     if($result == 0){//Temos de inserir um registo novo
 
-
     /*regcounter */
     $query = $connection->prepare(
       "SELECT regcounter + 1 AS pg
