@@ -1,6 +1,4 @@
-<?php defined('_BD1516') or die;
-global $connection;
-?>
+<?php defined('_BD1516') or die; global $connection; ?>
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--1-col"></div>
   <div class="mdl-cell mdl-cell--1-col"></div>
@@ -15,7 +13,8 @@ global $connection;
        switch($accao){
          case 'remove':
          case 'list':
-          $this->user->getRegistos();
+          $pagina = new Pagina($this->user->userid, $_GET['pid']);
+          $pagina->getRegistos();
          ?>
         <?php break;
         case 'verRegistos':?>

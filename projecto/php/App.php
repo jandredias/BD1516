@@ -56,6 +56,7 @@ class App{
 
     }
     include("controller/".$_GET['page'].".php");
+    include("model/".$_GET['page'].".php");
     include("views/index.php");
 
   }

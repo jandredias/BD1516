@@ -17,7 +17,7 @@ class Pagina {
     $query->execute(array(':userid' => $userid, ':pagecounter' => $pageid));
     $result = $query->fetch();
     $this->userid = $userid;
-    $this->pageid = $padeig;
+    $this->pageid = $pageid;
     $this->nome   = $result[1];
   }
   public function delete(){
@@ -35,6 +35,7 @@ class Pagina {
     //TODO
   }
   public function getRegistos(){
+    global $connection;
     $query = $connection->prepare(
       "SELECT r.regcounter, r.typecounter
       FROM registo r, reg_pag rp

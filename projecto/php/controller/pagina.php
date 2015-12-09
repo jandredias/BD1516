@@ -1,6 +1,7 @@
-<?php
+<?php defined('_BD1516') or die;
 global $connection;
 $accao = (isset($_GET['accao'])) ? $_GET['accao'] : "list";
+
 switch($accao){
   case "remove":
     $userid = $this->user->userid;

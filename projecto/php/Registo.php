@@ -1,5 +1,5 @@
+<?php defined('_BD1516') or die; global $connection; ?>
 <?php
-
 class Registo {
 
   private $userid      = NULL;
