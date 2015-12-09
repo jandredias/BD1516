@@ -22,10 +22,13 @@
         <div class="mdl-card__actions mdl-card--border">
           <button type="submit" name="Submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Iniciar sessão</button>
         </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a href="index.php?page=login" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Criar conta</a>
+        </div>
         <!-- End Login Button -->
         <!-- Login Button -->
         <div class="mdl-card__actions mdl-card--border">
-          <a href="index.php?page=forgotLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Recuperar password?</a>
+          <a href="index.php?page=login" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Recuperar password?</a>
         </div>
         <!-- End Login Button -->
       </form>
