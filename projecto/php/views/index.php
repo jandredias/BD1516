@@ -36,6 +36,31 @@
     <!-- END OF HEADER -->
     <!-- MAIN CONTENT -->
     <main class="mdl-layout__content" style="padding-top:64px;">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--1-col"></div>
+        <div class="mdl-cell mdl-cell--1-col"></div>
+        <div class="mdl-cell mdl-cell--1-col"></div>
+        <div class="mdl-cell mdl-cell--6-col" style="text-align:center;">
+          <?php if(count($this->getSuccessMessage())){ ?>
+          <div class="mdl-card mdl-shadow--2dp"
+          style="margin: 0 auto;width:100%;padding:20px;background:green;color:white;min-height:50px;">
+          <?php foreach($this->getSuccessMessage() as $message) echo $message; ?>
+          </div>
+          <?php } ?>
+          <?php if(count($this->getWarningMessage())){ ?>
+          <div class="mdl-card mdl-shadow--2dp"
+          style="margin: 0 auto;width:100%;padding:20px;background:yellow;color:white;min-height:50px;">
+          <?php foreach($this->getWarningMessage() as $message) echo $message; ?>
+          </div>
+          <?php } ?>
+          <?php if(count($this->getErrorMessage())){ ?>
+          <div class="mdl-card mdl-shadow--2dp"
+          style="margin: 0 auto;width:100%;padding:20px;background:red;color:white;min-height:50px;">
+            <?php foreach($this->getErrorMessage() as $message) echo $message;?>
+          </div>
+          <?php } ?>
+        </div>
+      </div>
       <?php if(isset($_GET['page']) &&
                in_array($_GET['page'], array("pagina", "registo",
                                              "tiposRegisto", "perfil"))){

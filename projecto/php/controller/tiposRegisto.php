@@ -2,8 +2,10 @@
 if($_GET['page'] == "tiposRegisto" && isset($_GET['accao'])){
   switch($_GET['accao']){
     case "inserir":
-      if(isset($_POST['nomeTipo']))
+      if(isset($_POST['nomeTipo'])){
         $this->user->adicionaTipoRegisto($_POST['nomeTipo']);
+        $this->addSuccessMessage("Tipo de registo adicionado com sucesso");
+      }
       break;
     case "remove":
       if(isset($_GET['tid']))

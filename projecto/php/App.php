@@ -8,6 +8,7 @@ class App{
   private $password;
   private $database;
   private $user = NULL;
+  private $messages = NULL;
   public function __construct(){
 
     global $connection;
@@ -25,8 +26,9 @@ class App{
     if(isset($_SESSION['username'])){
       $this->login($_SESSION['username']);
     }
-
+    $this->messages = array("warning" => array(), "success" => array(), "error" => array());
   }
+
   public function close(){
     $db = null;
   }
@@ -78,5 +80,25 @@ class App{
     if (property_exists($this, $property)) {
       $this->$property = $value;
     }
+  }
+
+
+  public function addWarningMessage($message){
+    $this->messages["warning"][] = $message;
+  }
+  public function addSuccessMessage($message){
+    $this->messages["success"][] = $message;
+  }
+  public function addErrorMessage($message){
+    $this->messages["error"][] = $message;
+  }
+  public function getWarningMessage(){
+    return $this->messages["warning"];
+  }
+  public function getSuccessMessage(){
+    return $this->messages["success"];
+  }
+  public function getErrorMessage(){
+    return $this->messages["error"];
   }
 }
