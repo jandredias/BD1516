@@ -55,28 +55,46 @@ class User {
     global $connection;
     $connection->begintransaction();
 
-    $userid = $this->userid;
-    $email = $this->email;
-
-    $seqid = $this->sequencia();
-
     $query = $connection->prepare(
-      "SELECT pagecounter + 1 AS pg
-       FROM(
-         SELECT userid, pagecounter, nome, idseq, ativa
-         FROM pagina
-         WHERE pagecounter >= ALL(
-           SELECT pagecounter FROM pagina)) naoserverparanadaestealias;");
-    $query->execute();
-    $page_counter= $query->fetch()[0];
-    $query = $connection->prepare(
-    "INSERT INTO pagina(userid,pagecounter,nome,idseq,ativa)
-    VALUES (:userid, :page_counter, :nome, :seqid, 1);");
+      "SELECT COUNT(*)
+       FROM pagina
+       WHERE userid=:userid AND
+             nome=:nome");
+    $query->execute(array(':userid' => $this->userid, ":nome" => $nome));
+    $result = $query->fetch();
+    $result = $result[0];
+    if($result == 0){//Temos de inserir uma pagima nova
+      $userid = $this->userid;
+      $email = $this->email;
+      $seqid = $this->sequencia();
 
-    $query->execute(array(':userid' => $userid,
-                          ':page_counter' => $page_counter,
-                          ':nome' => $nome,
-                          ':seqid' => $seqid));
+      $query = $connection->prepare(
+        "SELECT pagecounter + 1 AS pg
+         FROM(
+           SELECT userid, pagecounter, nome, idseq, ativa
+           FROM pagina
+           WHERE pagecounter >= ALL(
+             SELECT pagecounter FROM pagina)) naoserverparanadaestealias;");
+      $query->execute();
+      $page_counter= $query->fetch()[0];
+      $query = $connection->prepare(
+      "INSERT INTO pagina(userid,pagecounter,nome,idseq,ativa)
+      VALUES (:userid, :page_counter, :nome, :seqid, 1);");
+
+      $query->execute(array(':userid' => $userid,
+                            ':page_counter' => $page_counter,
+                            ':nome' => $nome,
+                            ':seqid' => $seqid));
+      //OLD END
+    }else{
+      $query = $connection->prepare(
+        "UPDATE pagina
+         SET ativa=1
+         WHERE userid=:userid AND
+               nome=:nome AND
+               ppagecounter IS NULL;");
+      $query->execute(array(':userid' => $this->userid, ":nome" => $nome));
+    }
     $connection->commit();
   }
   public function removePagina($page){
