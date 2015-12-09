@@ -56,7 +56,6 @@ class User {
 
     $userid = $this->userid;
     $email = $this->email;
-    $date=(date('Y-m-d H:i:s'));
 
     $seqid = $this->sequencia();
 
@@ -79,8 +78,28 @@ class User {
                           ':seqid' => $seqid));
     $connection->commit();
   }
+  public function removeTipoRegisto($tid){
+    global $connection;
+    $userid = $this->userid;
+    $date=(date('Y-m-d H:i:s'));
+    /* BEGIN TRANSACTION */
+    $connection->begintransaction();
+    /*$query = $connection->prepare(
+      "INSERT INTO sequencia(userid,moment)
+       VALUES (:userid,:date);");
+    $query->execute(array(':userid' => $userid, ':date' => $date));
+    */
+    $query = $connection->prepare(
+      "UPDATE tipo_registo
+       SET ativo=0
+       WHERE userid=:userid
+       AND typecnt=:typecnt;");
+    $query->execute(array(':userid' => $userid,':typecnt' => $tid));
+
+    $connection->commit();
+    /* END TRANSACTION */
+  }
   public function adicionaTipoRegisto($nome){
-    var_dump($this->userid);
     global $connection;
     $connection->begintransaction();
 
@@ -100,13 +119,9 @@ class User {
     $query = $connection->prepare(
     "INSERT INTO tipo_registo(userid,typecnt,nome,ativo,idseq)
     VALUES (:userid, :typecnt, :nome, 1, :idseq);");
-    var_dump(array(':userid' => $this->userid,
-                          ':typecnt' => $type_counter,
-                          ':nome' => $this->nome,
-                          ':idseq' => $seqid));
     $query->execute(array(':userid' => $this->userid,
                           ':typecnt' => $type_counter,
-                          ':nome' => $this->nome,
+                          ':nome' => $nome,
                           ':idseq' => $seqid));
     $connection->commit();
   }
@@ -133,9 +148,11 @@ class User {
   public function sequencia(){
     //Insere na tabela sequencia
     global $connection;
+
+    $date=(date('Y-m-d H:i:s'));
     $query = $connection->prepare("INSERT INTO sequencia(userid,moment)
                                    VALUES (:userid,:date);");
-    $query->execute(array(':userid' => $userid, ':date' => $date));
+    $query->execute(array(':userid' => $this->userid, ':date' => $date));
 
     //Retorna o maior contador de sequencia da base de dados
     $query = $connection->prepare("SELECT contador_sequencia
