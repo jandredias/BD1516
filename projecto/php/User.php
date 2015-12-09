@@ -132,7 +132,7 @@ class User {
                             ':idseq' => $seqid));
     }else{
       $query = $connection->prepare(
-        "UPDATE campo
+        "UPDATE tipo_registo
          SET ativo=1
          WHERE userid=:userid AND
                nome=:nome AND
