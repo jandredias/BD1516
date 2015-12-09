@@ -26,7 +26,7 @@
             <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
                href="index.php?page=tiposRegisto"  <?php } ?>>Tipos de Registo</a>
             <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
-               href="index.php?page=perfil" <?php } ?>>O meu perfil</a>
+               href="index.php?page=perfil&accao=list" <?php } ?>>O meu perfil</a>
             <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
                href="index.php?page=logout" <?php } ?>>Terminar sessão</a>
           </nav>
@@ -37,10 +37,23 @@
     <!-- MAIN CONTENT -->
     <main class="mdl-layout__content" style="padding-top:64px;">
       <?php if(isset($_GET['page']) &&
-               in_array($_GET['page'], array("login", "pagina", "registo",
-                                             "tiposRegisto", "perfil",
-                                             "exception")))
+               in_array($_GET['page'], array("pagina", "registo",
+                                             "tiposRegisto", "perfil"))){
+            ?>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--1-col"></div>
+              <div class="mdl-cell mdl-cell--1-col"></div>
+              <div class="mdl-cell mdl-cell--1-col"></div>
+              <div class="mdl-cell mdl-cell--6-col" style="text-align:center;">
+                <div class="mdl-card mdl-shadow--2dp" style="margin: 0 auto;width:100%;padding:20px;">
+                    <?php include $_GET['page']."/".($accao == "remove" ? "list" : $accao).".php"; ?>
+                </div>
+              </div>
+            </div>
+            <?php
+           }else if( in_array($_GET['page'], array("login","exception"))){
               include $_GET['page'].".php";
+           }
             else include "index_default.php"; ?>
     </main>
     <!-- END OF MAIN CONTENT -->
