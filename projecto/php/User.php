@@ -183,7 +183,7 @@ class User {
     }
     $connection->commit();
   }
-  public function adicionaRegisto($nome){
+  public function adicionaRegisto($nome, $tipo){
     //TODO
   }
   public function adicionaCampo($tipoRegisto, $nome){

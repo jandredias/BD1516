@@ -15,7 +15,9 @@ class Registo {
     //TODO
     //SELECT FROM DATABASE
   }
-
+  public function insereValor($count, $value){
+    //TODO
+  }
   public function __get($property){
     if(property_exists($this, $property))
       return $this->property;
