@@ -137,7 +137,7 @@ class User {
          WHERE userid=:userid AND
                nome=:nome AND
                ptypecnt IS NULL;");
-      $query->execute(array(':userid' => $this->userid, ':typecnt' => $this->typeid, ":nome" => $nome));
+      $query->execute(array(':userid' => $this->userid, ":nome" => $nome));
     }
     $connection->commit();
   }
