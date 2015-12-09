@@ -186,6 +186,14 @@ class User {
   public function adicionaRegisto($nome, $tipo){
     //TODO
   }
+  public function adicionaValor($campo, $tipoRegisto, $nrRegisto, $valor){
+    global $connection;
+    var_dump($campo);
+    var_dump($tipoRegisto);
+    var_dump($nrRegisto);
+    var_dump($valor);
+    //TODO
+  }
   public function adicionaCampo($tipoRegisto, $nome){
     //TODO
   }

@@ -1,9 +1,9 @@
 <?php
 
 class Campo{
-  private $userid;
-  private $typecnt;
-  private $campocnt;
+  public $userid;
+  public $typecnt;
+  public $campocnt;
   public $nome;
 
   function __construct($userid, $typecnt, $campocnt){

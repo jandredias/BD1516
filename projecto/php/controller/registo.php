@@ -8,10 +8,15 @@ switch($accao){
     break;
   case "inserir":
     if(isset($_POST['nomeRegisto']) && isset($_POST['tipoID'])){
+      var_dump($_POST);
       $nome = $_POST['nomeRegisto'];
       $tipoID = $_POST['tipoID'];
+      $this->user->adicionaRegisto($nome, $tipoID);
       $tipo = new TipoRegisto($this->user->userid, $tipoID);
-      
+      foreach($tipo->campos as $campo){
+        $this->user->adicionaValor($campo->campocnt, $campo->typecnt, $nome, $_POST[$campo->campocnt]);
+      }
+
     }
     break;
   default:
