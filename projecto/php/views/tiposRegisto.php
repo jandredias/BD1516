@@ -26,12 +26,13 @@ global $connection;
               </tr>
             </thead>
             <tbody>
-              <?php var_dump($this->user->tiposRegisto()); ?>
-          <?php foreach($this->user->tiposRegisto() as $tipo){ ?>
+
+          <?php if($this->user->tiposRegisto() != NULL)
+            foreach($this->user->tiposRegisto() as $tipo){ ?>
             <tr>
-              <td><a href="index.php?page=tipoRegisto&accao=remove&tid=<?php echo $tipo->typeid ?>">X</a></td>
+              <td><a href="index.php?page=tiposRegisto&accao=remove&tid=<?php echo $tipo->typeid ?>">X</a></td>
               <td><?php echo $tipo->typeid ?></td>
-              <td><a href="index.php?page=tipoRegisto&accao=verRegistos&tid=<?php echo $tipo->nome ?>"><?php echo $tipo->nome ?></a></td>
+              <td><a href="index.php?page=tiposRegisto&accao=verRegistos&tid=<?php echo $tipo->nome ?>"><?php echo $tipo->nome ?></a></td>
             </tr>
           <?php } ?>
 
@@ -39,7 +40,14 @@ global $connection;
         </table>
         <?php break;
         case 'inserir':?>
-
+        <h2>Criar tipo de registo</h2>
+        <form action="index.php?page=tiposRegisto&accao=inserir" method="post">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="nomeTipo" name="nomeTipo" />
+            <label class="mdl-textfield__label" for="nomeTipo">Nome do tipo de registo</label>
+          </div>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit" name="Submit">Criar</button>
+        </form>
         <?php break;
         case 'verRegistos':?>
 

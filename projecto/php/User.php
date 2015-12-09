@@ -80,6 +80,8 @@ class User {
     $connection->commit();
   }
   public function adicionaTipoRegisto($nome){
+    var_dump($this->userid);
+    global $connection;
     $connection->begintransaction();
 
     $seqid = $this->sequencia();
@@ -98,7 +100,10 @@ class User {
     $query = $connection->prepare(
     "INSERT INTO tipo_registo(userid,typecnt,nome,ativo,idseq)
     VALUES (:userid, :typecnt, :nome, 1, :idseq);");
-
+    var_dump(array(':userid' => $this->userid,
+                          ':typecnt' => $type_counter,
+                          ':nome' => $this->nome,
+                          ':idseq' => $seqid));
     $query->execute(array(':userid' => $this->userid,
                           ':typecnt' => $type_counter,
                           ':nome' => $this->nome,
@@ -127,6 +132,7 @@ class User {
   }
   public function sequencia(){
     //Insere na tabela sequencia
+    global $connection;
     $query = $connection->prepare("INSERT INTO sequencia(userid,moment)
                                    VALUES (:userid,:date);");
     $query->execute(array(':userid' => $userid, ':date' => $date));

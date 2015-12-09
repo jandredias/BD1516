@@ -1,4 +1,4 @@
-<?php defined('_BD1516') or die; $accao = (isset($_GET['accao'])) ? $_GET['accao'] : "list";
+<?php defined('_BD1516') or die;
 global $connection;
 ?>
 <div class="mdl-grid">
@@ -13,32 +13,8 @@ global $connection;
       <?php }
 
        switch($accao){
-         case 'remove': ?>
-          <?php
-          $userid = $this->user->userid;
-          $email = $this->user->email;
-          $pid = $_GET['pid'];
-          $date=(date('Y-m-d H:i:s'));
-          /* BEGIN TRANSACTION */
-	        $connection->begintransaction();
-          /*$query = $connection->prepare(
-            "INSERT INTO sequencia(userid,moment)
-             VALUES (:userid,:date);");
-          $query->execute(array(':userid' => $userid, ':date' => $date));
-          */
-          $query = $connection->prepare(
-            "UPDATE pagina
-             SET ativa=0
-             WHERE userid=:userid
-             AND pagecounter=:pagecounter;");
-          $query->execute(array(':userid' => $userid,':pagecounter' => $pid));
-
-          $connection->commit();
-          /* END TRANSACTION */
-           ?>
-        <?php case 'list': ?>
-        <?php
-
+         case 'remove':
+         case 'list':
         $query = $connection->prepare("SELECT pagecounter, nome FROM pagina WHERE userid=:userid AND ativa=1;");
         $userid = $this->user->userid;
         $query->execute(array(':userid' => $userid));  ?>
@@ -63,48 +39,6 @@ global $connection;
         </table>
         <?php break;
         case 'inserir':?>
-        <?php
-          if(isset($_POST['nomePagina'])){
-            //CONTROLLER inserir pagina
-
-            $connection->begintransaction();
-
-            $userid = $this->user->userid;
-            $email = $this->user->email;
-            $nome = $_POST['nomePagina'];
-            $date=(date('Y-m-d H:i:s'));
-
-            //Insere na tabela sequencia
-            $query = $connection->prepare("INSERT INTO sequencia(userid,moment)
-                                           VALUES (:userid,:date);");
-            $query->execute(array(':userid' => $userid, ':date' => $date));
-
-            //Retorna o maior contador de sequencia da base de dados
-            $query = $connection->prepare("SELECT contador_sequencia
-                                           FROM sequencia
-                                           WHERE contador_sequencia >= ALL(
-                                             SELECT contador_sequencia
-                                             FROM sequencia);");
-            $query->execute();
-            $seqid = $query->fetch()[0];
-            $query = $connection->prepare(
-              "SELECT pagecounter + 1 AS pg
-               FROM(
-                 SELECT userid, pagecounter, nome, idseq, ativa
-                 FROM pagina
-                 WHERE pagecounter >= ALL(
-                   SELECT pagecounter FROM pagina)) naoserverparanadaestealias;");
-            $query->execute();
-            $page_counter= $query->fetch()[0];
-            $query = $connection->prepare("INSERT INTO pagina(userid,pagecounter,nome,idseq,ativa) VALUES (:userid, :page_counter, :nome, :seqid, 1);");
-            $query->execute(array(':userid' => $userid,
-                                  ':page_counter' => $page_counter,
-                                  ':nome' => $nome,
-                                  ':seqid' => $seqid));
-            $connection->commit();
-          }
-          //end of CONTROLLER inserir pagina
-         ?>
         <h2>Criar página</h2>
           <form action="index.php?page=pagina&accao=inserir" method="post">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

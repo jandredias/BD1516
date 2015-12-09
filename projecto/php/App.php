@@ -55,7 +55,9 @@ class App{
     if(!isset($_GET['page']) && isset($_POST['username']) && isset($_POST['username'])){
 
     }
+    include("controller/".$_GET['page'].".php");
     include("views/index.php");
+
   }
   public function login($username, $password = ""){
 
