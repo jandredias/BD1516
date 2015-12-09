@@ -51,7 +51,8 @@ class User {
       $this->$property = $value;
     }
   }
-  public function adicionaPagina($name){
+  public function adicionaPagina($nome){
+    global $connection;
     $connection->begintransaction();
 
     $userid = $this->userid;
@@ -77,6 +78,29 @@ class User {
                           ':nome' => $nome,
                           ':seqid' => $seqid));
     $connection->commit();
+  }
+  public function removePagina($page){
+    global $connection;
+    $userid = $this->userid;
+    $email = $this->email;
+    $pid = $page;
+    $date=(date('Y-m-d H:i:s'));
+    /* BEGIN TRANSACTION */
+    $connection->begintransaction();
+    /*$query = $connection->prepare(
+      "INSERT INTO sequencia(userid,moment)
+       VALUES (:userid,:date);");
+    $query->execute(array(':userid' => $userid, ':date' => $date));
+    */
+    $query = $connection->prepare(
+      "UPDATE pagina
+       SET ativa=0
+       WHERE userid=:userid
+       AND pagecounter=:pagecounter;");
+    $query->execute(array(':userid' => $userid,':pagecounter' => $pid));
+
+    $connection->commit();
+    /* END TRANSACTION */
   }
   public function removeTipoRegisto($tid){
     global $connection;
