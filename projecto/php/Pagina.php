@@ -34,4 +34,19 @@ class Pagina {
   public function rename(){
     //TODO
   }
+  public function getRegistos(){
+    $query = $connection->prepare(
+      "SELECT r.regcounter, r.typecounter
+      FROM registo r, reg_pag rp
+      WHERE r.typecounter=rp.typeid AND
+            r.userid=rp.userid AND
+            r.regcounter=rp.regid AND
+            r.userid=:userid AND
+            rp.pageid=:pageid AND
+            r.ativo=1 AND
+            rp.ativa=1;");
+
+    $query->execute(array(':userid' => $this->userid, ':pageid' => $this->pageid));
+    var_dump($query->fetchAll());
+  }
 }

@@ -32,7 +32,7 @@ global $connection;
             <tr>
               <td><a href="index.php?page=pagina&accao=remove&pid=<?php echo $page['pagecounter'] ?>">X</a></td>
               <td><?php echo $page['pagecounter'] ?></td>
-              <td><a href="index.php?page=pagina&accao=verRegistos&pid=<?php echo $page['pagecounter'] ?>"><?php echo $page['nome'] ?></a></td>
+              <td><a href="index.php?page=registo&accao=list&pid=<?php echo $page['pagecounter'] ?>"><?php echo $page['nome'] ?></a></td>
             </tr>
             <?php } ?>
           </tbody>

@@ -8,10 +8,10 @@ class Registo {
   private $tipoRegisto = NULL;
   private $campos      = NULL;
 
-  public function __construct($userid, $regid){
+  public function __construct($userid, $regid, $typeid){
     $this->userid = $userid;
     $this->redig  = $regid;
-
+    $this->redig  = $regid;
     //TODO
     //SELECT FROM DATABASE
   }

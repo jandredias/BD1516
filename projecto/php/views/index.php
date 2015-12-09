@@ -9,7 +9,8 @@
 </head>
 <body>
   <!-- Main Container -->
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header has-drawer" style="background-color: #f3f3f3;">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header has-drawer"
+      style="background-color: #f3f3f3;">
     <!-- HEADER -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
@@ -20,10 +21,14 @@
           <div class="mdl-layout-spacer"></div>
           <!-- Navigation. We hide it in small screens. -->
           <nav class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=pagina" <?php } ?>>Página</a>
-            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=tiposRegisto"  <?php } ?>>Tipos de Registo</a>
-            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=perfil" <?php } ?>>O meu perfil</a>
-            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>href="index.php?page=logout" <?php } ?>>Terminar sessão</a>
+            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
+               href="index.php?page=pagina" <?php } ?>>Página</a>
+            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
+               href="index.php?page=tiposRegisto"  <?php } ?>>Tipos de Registo</a>
+            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
+               href="index.php?page=perfil" <?php } ?>>O meu perfil</a>
+            <a class="mdl-navigation__link" <?php if($_GET['page'] != "login"){ ?>
+               href="index.php?page=logout" <?php } ?>>Terminar sessão</a>
           </nav>
         </div>
       </header>
@@ -31,27 +36,12 @@
     <!-- END OF HEADER -->
     <!-- MAIN CONTENT -->
     <main class="mdl-layout__content" style="padding-top:64px;">
-      <?php  switch($_GET['page']){
-        case 'login':
-          include "login.php";
-          break;
-        case 'pagina':
-          include "pagina.php";
-          break;
-        case 'tiposRegisto':
-          include 'tiposRegisto.php';
-          break;
-        case 'perfil':
-          include "perfil.php";
-          break;
-        case 'exception':
-          include "Exception.php";
-          break;
-        default:
-          include "index_default.php";
-          break;
-      }
-      ?>
+      <?php if(isset($_GET['page']) &&
+               in_array($_GET['page'], array("login", "pagina", "registo",
+                                             "tiposRegisto", "perfil",
+                                             "exception")))
+              include $_GET['page'].".php";
+            else include "index_default.php"; ?>
     </main>
     <!-- END OF MAIN CONTENT -->
   </div>
