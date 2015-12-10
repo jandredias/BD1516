@@ -239,10 +239,13 @@ class User {
   }
   public function adicionaValor($campo, $tipoRegisto, $nrRegisto, $valor){
     global $connection;
+    $connection->begintransaction();
     var_dump($campo);
     var_dump($tipoRegisto);
     var_dump($nrRegisto);
     var_dump($valor);
+    userid  | typeid  | regid |   | valor  | idseq  | ativo | pcampoid
+    I NEED THIS campoid FIXME
     //TODO
   }
   public function adicionaCampo($tipoRegisto, $nome){
