@@ -1,17 +1,34 @@
 <?php defined('_BD1516') or die; global $connection; ?>
 <?php
 class Registo {
-  private $userid      = NULL;
-  private $nome        = NULL;
-  private $regid       = NULL;
-  private $tipoRegisto = NULL;
-  private $campos      = NULL;
+
+  public $userid      = NULL;
+  public $regid       = NULL;
+  public $tipoRegisto = NULL;
+  public $nome        = NULL;
+  public $valores     = NULL;
 
   public function __construct($userid, $regid, $typeid){
-    $this->userid = $userid;
-    $this->redig  = $regid;
-    $this->redig  = $regid;
-    //TODO
+    $this->userid       = $userid;
+    $this->redig        = $regid;
+    $this->tipoRegisto  = $typeid;
+
+    /* Get Name */
+    $query = $connection->prepare(
+      "SELECT nome
+       FROM registo
+       WHERE userid=:userid      AND
+             typecounter=:typeid AND
+             regcounter=:regid   AND
+             ativo=1");
+    $query->execute(array(':userid' => $userid, ':typeid' => $typeid, ':regid' => $regid));
+    $result = $query->fetch();
+    $this->$nome = $result;
+
+    //$valores = array(new Campo("nome do campo ou whatever") => "valor_no_campo")
+
+
+
     //SELECT FROM DATABASE
   }
   public function insereValor($count, $value){
