@@ -84,7 +84,7 @@ class TipoRegisto{
     }
     $connection->commit();
   }
-  public function removeCampo($nome){
+  public function removeCampo( $campoId ){
     global $connection;
     $connection->begintransaction();
     $query = $connection->prepare(
@@ -92,9 +92,9 @@ class TipoRegisto{
        SET ativo=0
        WHERE userid=:userid AND
              typecnt=:typecnt AND
-             nome=:nome AND
+             campocnt=:campocnt AND
              pcampocnt IS NULL;");
-    $query->execute(array(':userid' => $this->userid, ':typecnt' => $this->typeid, ":nome" => $nome));
+    $query->execute(array(':userid' => $this->userid, ':typecnt' => $this->typeid, ":campocnt" => $campoId));
     $connection->commit();
   }
   public function sequencia(){
