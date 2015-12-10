@@ -27,13 +27,9 @@ class Registo {
     $this->nome = $result;
 
     $tipo = new TipoRegisto($this->userid, $this->tipoRegisto);
-    //$campos = $tipo->getCampos();
-    //var_dump(count($campos));
-    //echo "<br />";
-    //var_dump($tipo->campos);
+
     foreach($tipo->campos as $campo){
-    //  echo "<br />";
-    //  echo 1;
+
       $query = $connection->prepare(
         "SELECT valor
          FROM valor
@@ -45,10 +41,13 @@ class Registo {
       $query->execute(array(':userid'  => $this->userid,
                             ':typeid'  => $this->tipoRegisto,
                             ':regid'   => $this->regid,
-                            ':campoid' => $this->campocnt));
-      $this->valores[] = array(new Campo($this->userid, $this->tipoRegisto, $this->campocnt), $query->fetch()[0]);
+                            ':campoid' => $campo->campocnt));
+
+      $c = new Campo($this->userid, $this->tipoRegisto, $campo->campocnt);
+
+      $result = $query->fetch();
+      $this->valores[] = array($c, $result[0]);
     }
-  //  var_dump($this->valores);
   }
   public function __get($property){
     if(property_exists($this, $property))

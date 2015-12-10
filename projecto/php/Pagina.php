@@ -23,10 +23,13 @@ class Pagina {
 
     $query = $connection->prepare(
       "SELECT r.regcounter, r.typecounter
-      FROM registo r, reg_pag rp
+      FROM registo r, reg_pag rp, tipo_registo tipo
       WHERE r.typecounter=rp.typeid AND
             r.userid=rp.userid AND
             r.regcounter=rp.regid AND
+            r.userid=tipo.userid AND
+            r.typecounter=tipo.typecnt AND
+            tipo.ativo=1 AND
             r.userid=:userid AND
             rp.pageid=:pageid AND
             r.ativo=1 AND

@@ -205,7 +205,6 @@ class User {
     $connection->commit();
   }
   public function adicionaRegistoAPagina($typeid, $nomeRegisto, $pageId){
-      var_dump($pageId);
       global $connection;
       $connection->begintransaction();
       $seqid = $this->sequencia();

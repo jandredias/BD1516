@@ -28,7 +28,7 @@
           <tbody>
             <?php foreach($registo->valores as $valor){ ?>
             <tr>
-              <td><?php var_dump($valor); echo $valor[0]->nome ?></td>
+              <td><?php echo $valor[0]->nome ?></td>
               <td><?php echo $valor[1] ?></td>
             </tr>
             <?php } ?>
