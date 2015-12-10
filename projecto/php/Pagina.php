@@ -30,9 +30,20 @@ class Pagina {
             rp.pageid=:pageid AND
             r.ativo=1 AND
             rp.ativa=1;");
+    var_dump("SELECT r.regcounter, r.typecounter
+    FROM registo r, reg_pag rp
+    WHERE r.typecounter=rp.typeid AND
+          r.userid=rp.userid AND
+          r.regcounter=rp.regid AND
+          r.userid=:userid AND
+          rp.pageid=:pageid AND
+          r.ativo=1 AND
+          rp.ativa=1;");
     $query->execute(array(':userid' => $this->userid, ':pageid' => $this->pageid));
     $this->registos = array();
-    foreach($query->fetchAll() as $registo)
+    $result = $query->fetchAll();
+    var_dump(count($result));
+    foreach($result as $registo)
       $this->registos[] = new Registo($this->userid, $registo[0], $registo[1]);
   }
   public function delete(){

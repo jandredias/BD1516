@@ -25,25 +25,6 @@ class Registo {
     $result = $query->fetch();
     $this->$nome = $result;
 
-    //$valores = array(new Campo("nome do campo ou whatever") => "valor_no_campo")
-
-
-
-    //SELECT FROM DATABASE
-  }
-  public function insereValor($count, $value){
-    //TODO
-  }
-  public function __get($property){
-    if(property_exists($this, $property))
-      return $this->property;
-  }
-  public function __set($property, $value){
-    if(property_exists($this, $property))
-      $this->$property = $value
-  }
-
-  public function campos(){
     $tipo = new TipoRegisto($this->userid, $this->TipoRegisto);
     foreach($tipo->campos as $campo){
       $query = $connection->prepare(
@@ -60,6 +41,20 @@ class Registo {
                             ':campoid' => $this->campocnt));
       $this->campos[new Campo($this->userid, $this->tipoRegisto, $this->campocnt)] = $query->fetch()[0];
     }
+  }
+  public function insereValor($count, $value){
+    //TODO
+  }
+  public function __get($property){
+    if(property_exists($this, $property))
+      return $this->property;
+  }
+  public function __set($property, $value){
+    if(property_exists($this, $property))
+      $this->$property = $value
+  }
+
+  public function campos(){
 
 
   }

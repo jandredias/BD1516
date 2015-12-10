@@ -183,6 +183,9 @@ class User {
     }
     $connection->commit();
   }
+  public function adicionaRegistoAPagina($reg, $page){
+    //FIXME
+  }
   public function adicionaRegisto($nome, $typeid){
     global $connection;
     $connection->begintransaction();

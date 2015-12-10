@@ -3,7 +3,6 @@
 <br>
 <h2>Registos existentes na página</h2>
 <?php
- $pagina = new Pagina($this->user->userid, $_GET['pid']);
- var_dump($pagina->getRegistos());
+ 
 
  ?>
