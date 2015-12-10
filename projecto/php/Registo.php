@@ -11,7 +11,7 @@ class Registo {
   public function __construct($userid, $regid, $typeid){
     global $connection;
     $this->userid       = $userid;
-    $this->redig        = $regid;
+    $this->regid        = $regid;
     $this->tipoRegisto  = $typeid;
 
     /* Get Name */

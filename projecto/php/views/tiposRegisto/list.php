@@ -12,8 +12,8 @@
   </thead>
   <tbody>
 
-<?php if($this->user->tiposRegisto() != NULL)
-  foreach($this->user->tiposRegisto() as $tipo){ ?>
+<?php if($this->user->tiposRegisto != NULL)
+  foreach($this->user->tiposRegisto as $tipo){ ?>
   <tr>
     <td><a href="index.php?page=tiposRegisto&accao=remove&tid=<?php echo $tipo->typeid ?>">X</a></td>
     <td><?php echo $tipo->typeid ?></td>

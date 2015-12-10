@@ -4,7 +4,7 @@
 
 switch($accao){
   case "inserir":
-    $tipos = $this->user->tiposRegisto();
+    $tipos = $this->user->tiposRegisto;
     break;
   case "preencher":
     $tipo = new TipoRegisto($this->user->userid, $_POST['tipoID']);

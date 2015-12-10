@@ -39,6 +39,15 @@ class User {
     $this->resposta2 = $array["resposta2"];
     $this->pais = $array["pais"];
     $this->categoria = $array["categoria"];
+    $query = $connection->prepare(
+      "SELECT typecnt
+      FROM tipo_registo
+      WHERE userid=:userid AND
+      ativo=1;");
+    $query->execute(array(':userid' => $this->userid));
+    foreach($query->fetchAll() as $row)
+      $this->tiposRegisto[] = new TipoRegisto($this->userid, $row[0]);
+
   }
 
   public function __get($property) {
@@ -257,7 +266,6 @@ class User {
 
     $result = $query->fetch();
     $nrRegisto = $result[0];
-    var_dump($nrRegisto);
 
     $query = $connection->prepare(
     "INSERT INTO valor(userid,typeid,regid,campoid,valor,idseq,ativo)
@@ -269,23 +277,6 @@ class User {
                           ':valor'      => $valor,
                           ':idseq'      => $seqid));
     $connection->commit();
-  }
-  public function adicionaCampo($tipoRegisto, $nome){
-    //TODO
-  }
-  public function tiposRegisto(){
-    global $connection;
-    if($this->tiposRegisto == NULL){
-      $query = $connection->prepare(
-        "SELECT typecnt
-        FROM tipo_registo
-        WHERE userid=:userid AND
-        ativo=1;");
-      $query->execute(array(':userid' => $this->userid));
-      foreach($query->fetchAll() as $row)
-        $this->tiposRegisto[] = new TipoRegisto($this->userid, $row[0]);
-    }
-    return $this->tiposRegisto;
   }
   public function sequencia(){
     //Insere na tabela sequencia

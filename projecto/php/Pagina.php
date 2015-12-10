@@ -6,6 +6,7 @@ class Pagina {
   public $pageid   = NULL;
   public $nome     = NULL;
   public $registos = NULL;
+
   public function __construct($userid, $pageid){
     global $connection;
     $query = $connection->prepare(
@@ -30,7 +31,7 @@ class Pagina {
             rp.pageid=:pageid AND
             r.ativo=1 AND
             rp.ativa=1;");
-    
+
     $query->execute(array(':userid' => $this->userid, ':pageid' => $this->pageid));
     $this->registos = array();
     $result = $query->fetchAll();

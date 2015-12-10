@@ -11,7 +11,9 @@ switch($accao){
       $nome = $_POST['nomeRegisto'];
       $tipoID = $_POST['tipoID'];
       $this->user->adicionaRegisto($nome, $tipoID);
-      //$this->user->adicionaRegistoAPagina($nome, $_POST['pid']);
+
+      $this->user->adicionaRegistoAPagina($tipoID, $nome, $_POST['pid']);
+
       $tipo = new TipoRegisto($this->user->userid, $tipoID);
       foreach($tipo->campos as $campo){
         $this->user->adicionaValor($campo->campocnt, $campo->typecnt, $nome, $_POST[$campo->campocnt]);
