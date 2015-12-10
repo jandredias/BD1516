@@ -8,6 +8,9 @@ switch($accao){
     $query->execute(array(':userid' => $userid));
     $paginas = $query->fetchAll();
     break;
+  case "view":
+
+    break;
   default:
     break;
 }

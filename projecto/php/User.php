@@ -234,9 +234,6 @@ class User {
     }
     $connection->commit();
   }
-  public function adicionaValor($campo,$tipoRegisto,$nomeRegisto,$valor){
-    //TODO
-  }
   public function adicionaValor($campo, $tipoRegisto, $nrRegisto, $valor){
     global $connection;
     var_dump($campo);

@@ -5,12 +5,14 @@ $accao = (isset($_GET['accao'])) ? $_GET['accao'] : "list";
 switch($accao){
   case "remove":
     $this->user->removePagina($_GET['pid']);
+    $this->addSuccessMessage("Página removida com sucesso");
     break;
   case "inserir":
    if(isset($_POST['nomePagina'])){
        $this->user->adicionaPagina($_POST['nomePagina']);
-     }
-     break;
+       $this->addSuccessMessage("Página criada com sucesso");
+    }
+    break;
   default:
     break;
 } ?>
