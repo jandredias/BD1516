@@ -84,6 +84,19 @@ class TipoRegisto{
     }
     $connection->commit();
   }
+  public function removeCampo($nome){
+    global $connection;
+    $connection->begintransaction();
+    $query = $connection->prepare(
+      "UPDATE campo
+       SET ativo=0
+       WHERE userid=:userid AND
+             typecnt=:typecnt AND
+             nome=:nome AND
+             pcampocnt IS NULL;");
+    $query->execute(array(':userid' => $this->userid, ':typecnt' => $this->typeid, ":nome" => $nome));
+    $connection->commit();
+  }
   public function sequencia(){
     global $connection;
 
