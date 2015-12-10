@@ -192,8 +192,52 @@ class User {
     }
     $connection->commit();
   }
-  public function adicionaRegistoAPagina($reg, $page){
-    //FIXME
+  public function adicionaRegistoAPagina($typeid, $nomeRegisto, $pageId){
+
+      global $connection;
+      $connection->begintransaction();
+      $seqid = $this->sequencia();
+
+      /* Get Numero de Registo */
+      $query = $connection->prepare(
+       "SELECT regcounter
+        FROM registo
+        WHERE userid=:userid
+                AND typecounter=:typeid
+                AND ativo=1
+                AND nome=:nome;");
+
+      $query->execute(array(
+        ':userid' => $this->userid,
+        ':typeid' => $typeid,
+        ':nome' => $nomeRegisto));
+
+      $result = $query->fetch();
+      $nrRegisto = $result[0];
+
+      /* get idregpag */
+      $query = $connection->prepare(
+        "SELECT idregpag + 1 AS pg
+         FROM(
+           SELECT userid, idregpag
+           FROM reg_pag
+           WHERE idregpag >= ALL(
+             SELECT idregpag FROM reg_pag)) naoserverparanadaestealias;");
+      $query->execute();
+      $idregpag = $query->fetch()[0];
+
+      $query = $connection->prepare(
+
+      "INSERT INTO reg_pag(userid,typeid,regid,pageid,idseq,ativo,idregpag)
+      VALUES (:userid, :typecnt, :regcounter, :pageid, :idseq, 1, :idregpag);");
+      $query->execute(array(':userid'     => $this->userid,
+                            ':typecnt'    => $typeid,
+                            ':regcounter' => $nrRegisto,
+                            ':pageid'     => $pageId,
+                            ':idregpag'   => $idregpag,
+                            ':idseq'      => $seqid));
+      $connection->commit();
+
   }
   public function adicionaRegisto($nome, $typeid){
     global $connection;
