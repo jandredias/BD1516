@@ -9,6 +9,7 @@ class Registo {
   public $valores     = NULL;
 
   public function __construct($userid, $regid, $typeid){
+    global $connection;
     $this->userid       = $userid;
     $this->redig        = $regid;
     $this->tipoRegisto  = $typeid;
@@ -23,7 +24,7 @@ class Registo {
              ativo=1");
     $query->execute(array(':userid' => $userid, ':typeid' => $typeid, ':regid' => $regid));
     $result = $query->fetch();
-    $this->$nome = $result;
+    $this->nome = $result;
 
     $tipo = new TipoRegisto($this->userid, $this->TipoRegisto);
     foreach($tipo->campos as $campo){
@@ -51,11 +52,6 @@ class Registo {
   }
   public function __set($property, $value){
     if(property_exists($this, $property))
-      $this->$property = $value
-  }
-
-  public function campos(){
-
-
+      $this->$property = $value;
   }
 }

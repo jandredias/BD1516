@@ -10,7 +10,6 @@ switch($accao){
     break;
   case "view":
     $pagina = new Pagina($this->user->userid, $_GET['pid']);
-    var_dump($pagina);
     break;
   default:
     break;

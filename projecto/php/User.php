@@ -237,10 +237,27 @@ class User {
     }
     $connection->commit();
   }
-  public function adicionaValor($campo, $tipoRegisto, $nrRegisto, $valor){
+  public function adicionaValor($campo, $tipoRegisto, $nome, $valor){
     global $connection;
     $connection->begintransaction();
     $seqid = $this->sequencia();
+
+    $query = $connection->prepare(
+     "SELECT regcounter
+      FROM registo
+      WHERE userid=:userid
+      AND typecounter=:typeid
+      AND ativo=1
+      AND nome=:nome;");
+
+    $query->execute(array(
+      ':userid' => $this->userid,
+      ':typeid' => $tipoRegisto,
+      ':nome' => $nome));
+
+    $result = $query->fetch();
+    $nrRegisto = $result[0];
+    var_dump($nrRegisto);
 
     $query = $connection->prepare(
     "INSERT INTO valor(userid,typeid,regid,campoid,valor,idseq,ativo)
