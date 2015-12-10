@@ -1,9 +1,9 @@
 <?php
 class TipoRegisto{
-  private $userid = NULL;
-  private $typeid = NULL;
-  private $nome   = NULL;
-  private $campos = NULL;
+  public $userid = NULL;
+  public $typeid = NULL;
+  public $nome   = NULL;
+  public $campos = NULL;
   public function __construct($userid, $typeid){
     global $connection;
     $query = $connection->prepare(
@@ -27,10 +27,10 @@ class TipoRegisto{
              typecnt=:typecnt");
     $query->execute(array(':userid' => $userid, ':typecnt' => $typeid));
     $this->campos = array();
-    foreach($query->fetchAll() as $row)
+    foreach($query->fetchAll() as $row){
       $this->campos[] = new Campo($this->userid, $this->typeid, $row[0]);
+    }
   }
-
   //Magic functions
   public function __get($property){
     if(property_exists($this, $property))

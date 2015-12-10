@@ -2,6 +2,7 @@
 <h2>Preencher campos do registo criado</h2>
 
 <form action="index.php?page=registo&accao=inserir" method="post">
+  <input type="hidden" name="pid" value="<?php echo $_POST['pid'] ?>" />
   <input type="hidden" name="nomeRegisto" value="<?php echo $_POST['nomeRegisto'] ?>" />
   <input type="hidden" name="tipoID" value="<?php echo $_POST['tipoID'] ?>" />
   <?php foreach($campos as $campo){ ?>

@@ -39,6 +39,7 @@ class User {
     $this->resposta2 = $array["resposta2"];
     $this->pais = $array["pais"];
     $this->categoria = $array["categoria"];
+
     $query = $connection->prepare(
       "SELECT typecnt
       FROM tipo_registo
@@ -47,9 +48,20 @@ class User {
     $query->execute(array(':userid' => $this->userid));
     foreach($query->fetchAll() as $row)
       $this->tiposRegisto[] = new TipoRegisto($this->userid, $row[0]);
-
   }
 
+  public function reloadTipos(){
+    global $connection;
+    $this->tiposRegisto = array();
+    $query = $connection->prepare(
+      "SELECT typecnt
+      FROM tipo_registo
+      WHERE userid=:userid AND
+      ativo=1;");
+    $query->execute(array(':userid' => $this->userid));
+    foreach($query->fetchAll() as $row)
+      $this->tiposRegisto[] = new TipoRegisto($this->userid, $row[0]);
+  }
   public function __get($property) {
     if (property_exists($this, $property)) {
       return $this->$property;
@@ -193,7 +205,7 @@ class User {
     $connection->commit();
   }
   public function adicionaRegistoAPagina($typeid, $nomeRegisto, $pageId){
-
+      var_dump($pageId);
       global $connection;
       $connection->begintransaction();
       $seqid = $this->sequencia();
@@ -228,7 +240,7 @@ class User {
 
       $query = $connection->prepare(
 
-      "INSERT INTO reg_pag(userid,typeid,regid,pageid,idseq,ativo,idregpag)
+      "INSERT INTO reg_pag(userid,typeid,regid,pageid,idseq,ativa,idregpag)
       VALUES (:userid, :typecnt, :regcounter, :pageid, :idseq, 1, :idregpag);");
       $query->execute(array(':userid'     => $this->userid,
                             ':typecnt'    => $typeid,

@@ -49,7 +49,7 @@
           <?php } ?>
           <?php if(count($this->getWarningMessage())){ ?>
           <div class="mdl-card mdl-shadow--2dp"
-          style="margin: 0 auto;width:100%;padding:20px;background:yellow;color:white;min-height:50px;">
+          style="margin: 0 auto;width:100%;padding:20px;background:#ff9900;color:white;min-height:50px;">
           <?php foreach($this->getWarningMessage() as $message) echo $message; ?>
           </div>
           <?php } ?>

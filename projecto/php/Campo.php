@@ -17,9 +17,10 @@ class Campo{
              campocnt=:campocnt");
     $query->execute(array(':userid' => $userid, ':typecnt' => $typecnt, ':campocnt' => $campocnt));
     $result = $query->fetch();
-    $this->typecnt = $typecnt;
+    $this->typecnt  = $typecnt;
+    $this->userid   = $userid;
     $this->campocnt = $campocnt;
-    $this->nome   = $result[0];
+    $this->nome     = $result[0];
   }
   public function __get($property){
     if(property_exists($this, $property))
