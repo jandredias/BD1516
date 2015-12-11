@@ -13,8 +13,9 @@ try{
   $application = new App();
   $application->execute();
 }catch(Exception $e){
-  header('location: index.php?page=exception&message=' . $e->getMessage());
+  header('location: index.php?page=exception&message=' . 
+                    $e->getMessage());
 }catch(PDOException $e){
-  header('location: index.php?page=exception&message=' . $e->getMessage());
-
-}
+  header('location: index.php?page=exception&message=' .
+                    $e->getMessage());
+} ?>

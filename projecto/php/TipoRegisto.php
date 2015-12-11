@@ -12,7 +12,8 @@ class TipoRegisto{
        WHERE userid=:userid AND
              ativo=1 AND
              typecnt=:typeid");
-    $query->execute(array(':userid' => $userid, ':typeid' => $typeid));
+    $query->execute(array(':userid' => $userid,
+                          ':typeid' => $typeid));
     $result = $query->fetch();
     $this->userid = $userid;
     $this->typeid = $typeid;
@@ -25,10 +26,13 @@ class TipoRegisto{
        WHERE userid=:userid AND
              ativo=1 AND
              typecnt=:typecnt");
-    $query->execute(array(':userid' => $userid, ':typecnt' => $typeid));
+    $query->execute(array(':userid' => $userid,
+                          ':typecnt' => $typeid));
     $this->campos = array();
     foreach($query->fetchAll() as $row){
-      $this->campos[] = new Campo($this->userid, $this->typeid, $row[0]);
+      $this->campos[] = new Campo($this->userid,
+                                  $this->typeid,
+                                  $row[0]);
     }
   }
   //Magic functions
@@ -50,7 +54,9 @@ class TipoRegisto{
        WHERE userid=:userid AND
              typecnt=:typeid AND
              nome=:nome");
-    $query->execute(array(':userid' => $this->userid, ':typeid' => $this->typeid, ":nome" => $nome));
+    $query->execute(array(':userid' => $this->userid,
+                          ':typeid' => $this->typeid, 
+                          ':nome'   => $nome));
     $result = $query->fetch();
     $result = $result[0];
     if($result == 0){//Temos de inserir um campo novo
@@ -61,18 +67,19 @@ class TipoRegisto{
            SELECT campocnt
            FROM campo
            WHERE campocnt >= ALL(
-             SELECT campocnt FROM campo)) naoserverparanadaestealias;");
+             SELECT campocnt FROM campo)) nop;");
       $query->execute();
       $campoCount = $query->fetch()[0];
       $query = $connection->prepare(
-      "INSERT INTO campo(userid,typecnt,campocnt,idseq,ativo, nome)
+      "INSERT INTO campo
+         (userid,typecnt,campocnt,idseq,ativo, nome)
       VALUES (:userid, :typecnt, :campocnt, :idseq, 1, :nome);");
       $query->execute(array(':userid' => $this->userid,
                             ':typecnt' => $this->typeid,
                             ':campocnt' => $campoCount,
                             ':idseq' => $this->sequencia(),
                             ':nome' => $nome));
-    }else{//Caso contrario o campo ja existe e apenas temos de o ativar
+    }else{//Caso contrario o campo ja existe e temos de o ativar
       $query = $connection->prepare(
         "UPDATE campo
          SET ativo=1
@@ -80,7 +87,9 @@ class TipoRegisto{
                typecnt=:typecnt AND
                nome=:nome AND
                pcampocnt IS NULL;");
-      $query->execute(array(':userid' => $this->userid, ':typecnt' => $this->typeid, ":nome" => $nome));
+      $query->execute(array(':userid' => $this->userid,
+                            ':typecnt' => $this->typeid,
+                            ':nome' => $nome));
     }
     $connection->commit();
   }
@@ -94,25 +103,30 @@ class TipoRegisto{
              typecnt=:typecnt AND
              campocnt=:campocnt AND
              pcampocnt IS NULL;");
-    $query->execute(array(':userid' => $this->userid, ':typecnt' => $this->typeid, ":campocnt" => $campoId));
+    $query->execute(array(':userid' => $this->userid,
+                          ':typecnt' => $this->typeid,
+                          ':campocnt' => $campoId));
     $connection->commit();
   }
   public function sequencia(){
     global $connection;
 
     $date=(date('Y-m-d H:i:s'));
-    $query = $connection->prepare("INSERT INTO sequencia(userid,moment)
-                                   VALUES (:userid,:date);");
-    $query->execute(array(':userid' => $this->userid, ':date' => $date));
+    $query = $connection->prepare(
+      "INSERT INTO sequencia(userid,moment)
+       VALUES (:userid,:date);");
+    $query->execute(array(':userid' => $this->userid,
+                          ':date'   => $date));
 
     //Retorna o maior contador de sequencia da base de dados
-    $query = $connection->prepare("SELECT contador_sequencia
-                                   FROM sequencia
-                                   WHERE contador_sequencia >= ALL(
-                                     SELECT contador_sequencia
-                                     FROM sequencia);");
+    $query = $connection->prepare(
+      "SELECT contador_sequencia
+       FROM sequencia
+       WHERE contador_sequencia >= ALL(
+       SELECT contador_sequencia
+       FROM sequencia);");
     $query->execute();
     return $query->fetch()[0];
   }
 }
- ?>
+?>

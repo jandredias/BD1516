@@ -181,7 +181,7 @@ class User {
            SELECT typecnt
            FROM tipo_registo
            WHERE typecnt >= ALL(
-             SELECT typecnt FROM tipo_registo)) naoserverparanadaestealias;");
+             SELECT typecnt FROM tipo_registo)) nop;");
 
       $query->execute();
       $type_counter = $query->fetch()[0];
@@ -200,11 +200,14 @@ class User {
          WHERE userid=:userid AND
                nome=:nome AND
                ptypecnt IS NULL;");
-      $query->execute(array(':userid' => $this->userid, ":nome" => $nome));
+      $query->execute(array(':userid' => $this->userid,
+                            ':nome' => $nome));
     }
     $connection->commit();
   }
-  public function adicionaRegistoAPagina($typeid, $nomeRegisto, $pageId){
+  public function adicionaRegistoAPagina($typeid,
+                                         $nomeRegisto,
+                                         $pageId){
       global $connection;
       $connection->begintransaction();
       $seqid = $this->sequencia();
@@ -233,14 +236,17 @@ class User {
            SELECT userid, idregpag
            FROM reg_pag
            WHERE idregpag >= ALL(
-             SELECT idregpag FROM reg_pag)) naoserverparanadaestealias;");
+             SELECT idregpag FROM reg_pag)) nope;");
       $query->execute();
       $idregpag = $query->fetch()[0];
 
       $query = $connection->prepare(
 
-      "INSERT INTO reg_pag(userid,typeid,regid,pageid,idseq,ativa,idregpag)
-      VALUES (:userid, :typecnt, :regcounter, :pageid, :idseq, 1, :idregpag);");
+      "INSERT INTO reg_pag
+         (userid,typeid,regid,pageid,idseq,ativa,idregpag)
+      VALUES
+         (:userid, :typecnt, :regcounter, :pageid,
+          :idseq, 1, :idregpag);");
       $query->execute(array(':userid'     => $this->userid,
                             ':typecnt'    => $typeid,
                             ':regcounter' => $nrRegisto,
@@ -259,7 +265,9 @@ class User {
        WHERE userid=:userid AND
              typecounter=:typeid AND
              nome=:nome");
-    $query->execute(array(':userid' => $this->userid, ':typeid' => $typeid,":nome" => $nome));
+    $query->execute(array(':userid' => $this->userid,
+                          ':typeid' => $typeid,
+                          ':nome' => $nome));
     $result = $query->fetch();
     $result = $result[0];
     if($result == 0){//Temos de inserir um registo novo
@@ -271,7 +279,7 @@ class User {
          SELECT regcounter
          FROM registo
          WHERE regcounter >= ALL(
-           SELECT regcounter FROM registo)) naoserverparanadaestealias;");
+           SELECT regcounter FROM registo)) nop;");
 
     $query->execute();
     $regcounter = $query->fetch()[0];
@@ -279,8 +287,10 @@ class User {
 
     /* the real insert */
     $query = $connection->prepare(
-    "INSERT INTO registo(userid,typecounter,regcounter,nome,ativo,idseq)
-    VALUES (:userid, :typecnt, :regcounter, :nome, 1, :idseq);");
+    "INSERT INTO registo
+       (userid,typecounter,regcounter,nome,ativo,idseq)
+       VALUES
+       (:userid, :typecnt, :regcounter, :nome, 1, :idseq);");
     $query->execute(array(':userid' => $this->userid,
                           ':typecnt' => $typeid,
                           ':regcounter' => $regcounter,
@@ -297,11 +307,16 @@ class User {
                typecounter=:typeid AND
                nome=:nome          AND
                pregcounter IS NULL;");
-      $query->execute(array(':userid' => $this->userid, ':typeid' => $typeid,":nome" => $nome));
+      $query->execute(array(':userid' => $this->userid,
+                            ':typeid' => $typeid,
+                            ':nome' => $nome));
     }
     $connection->commit();
   }
-  public function adicionaValor($campo, $tipoRegisto, $nome, $valor){
+  public function adicionaValor($campo,
+                                $tipoRegisto,
+                                $nome,
+                                $valor){
     global $connection;
     $connection->begintransaction();
     $seqid = $this->sequencia();
@@ -323,8 +338,11 @@ class User {
     $nrRegisto = $result[0];
 
     $query = $connection->prepare(
-    "INSERT INTO valor(userid,typeid,regid,campoid,valor,idseq,ativo)
-    VALUES (:userid, :typecnt, :regcounter, :campoid, :valor, :idseq, 1);");
+    "INSERT INTO valor
+       (userid,typeid,regid,campoid,valor,idseq,ativo)
+    VALUES
+       (:userid, :typecnt, :regcounter,
+        :campoid, :valor, :idseq, 1);");
     $query->execute(array(':userid'     => $this->userid,
                           ':typecnt'    => $tipoRegisto,
                           ':regcounter' => $nrRegisto,
@@ -338,17 +356,21 @@ class User {
     global $connection;
 
     $date=(date('Y-m-d H:i:s'));
-    $query = $connection->prepare("INSERT INTO sequencia(userid,moment)
-                                   VALUES (:userid,:date);");
-    $query->execute(array(':userid' => $this->userid, ':date' => $date));
+    $query = $connection->prepare(
+    "INSERT INTO sequencia(userid,moment)
+       VALUES (:userid,:date);");
+    $query->execute(array(':userid' => $this->userid,
+                          ':date' => $date));
 
     //Retorna o maior contador de sequencia da base de dados
-    $query = $connection->prepare("SELECT contador_sequencia
-                                   FROM sequencia
-                                   WHERE contador_sequencia >= ALL(
-                                     SELECT contador_sequencia
-                                     FROM sequencia);");
+    $query = $connection->prepare(
+    "SELECT contador_sequencia
+     FROM sequencia
+     WHERE contador_sequencia >= ALL(
+     SELECT contador_sequencia
+     FROM sequencia);");
     $query->execute();
     return $query->fetch()[0];
   }
 }
+?>

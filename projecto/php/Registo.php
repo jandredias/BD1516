@@ -22,7 +22,9 @@ class Registo {
              typecounter=:typeid AND
              regcounter=:regid   AND
              ativo=1");
-    $query->execute(array(':userid' => $userid, ':typeid' => $typeid, ':regid' => $regid));
+    $query->execute(array(':userid' => $userid,
+                          ':typeid' => $typeid,
+                          ':regid' => $regid));
     $result = $query->fetch();
     $this->nome = $result;
 
@@ -43,7 +45,9 @@ class Registo {
                             ':regid'   => $this->regid,
                             ':campoid' => $campo->campocnt));
 
-      $c = new Campo($this->userid, $this->tipoRegisto, $campo->campocnt);
+      $c = new Campo($this->userid,
+                     $this->tipoRegisto,
+                     $campo->campocnt);
 
       $result = $query->fetch();
       $this->valores[] = array($c, $result[0]);
@@ -58,3 +62,4 @@ class Registo {
       $this->$property = $value;
   }
 }
+?>

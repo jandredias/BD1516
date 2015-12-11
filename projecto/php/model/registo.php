@@ -10,7 +10,11 @@ switch($accao){
     }
     break;
   case "preencher":
-    $tipo = new TipoRegisto($this->user->userid, $_POST['tipoID']);
+    if(!isset($_POST['tipoID'])){
+      header("location: index.php?page=registo&accao=inserir&pid=".$_POST['pid']."&erro");
+    }
+    $tipo = new TipoRegisto($this->user->userid,
+                            $_POST['tipoID']);
     $campos = $tipo->campos;
     break;
   default:

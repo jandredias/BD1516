@@ -15,7 +15,8 @@ class Pagina {
        WHERE userid=:userid AND
              ativa=1 AND
              pagecounter=:pagecounter");
-    $query->execute(array(':userid' => $userid, ':pagecounter' => $pageid));
+    $query->execute(array(':userid' => $userid,
+                          ':pagecounter' => $pageid));
     $result = $query->fetch();
     $this->userid = $userid;
     $this->pageid = $pageid;
@@ -35,11 +36,14 @@ class Pagina {
             r.ativo=1 AND
             rp.ativa=1;");
 
-    $query->execute(array(':userid' => $this->userid, ':pageid' => $this->pageid));
+    $query->execute(array(':userid' => $this->userid,
+                          ':pageid' => $this->pageid));
     $this->registos = array();
     $result = $query->fetchAll();
     foreach($result as $registo)
-      $this->registos[] = new Registo($this->userid, $registo[0], $registo[1]);
+      $this->registos[] = new Registo($this->userid,
+                                      $registo[0],
+                                      $registo[1]);
   }
   public function delete(){
     global $connection;
@@ -49,10 +53,10 @@ class Pagina {
        SET ativa=0
        WHERE userid=:userid
        AND pagecounter=:pagecounter;");
-    $query->execute(array(':userid' => $this->userid,':pagecounter' => $this->pageid));
+    $query->execute(array(':userid' => $this->userid,
+                          ':pagecounter' => $this->pageid));
     $connection->commit();
   }
-  public function rename(){
-    //TODO
-  }
 }
+
+?>

@@ -1,9 +1,11 @@
+<?php defined('_BD1516') or die; global $connection; ?>
 <?php
 if($_GET['page'] == "tiposRegisto" && isset($_GET['accao'])){
   switch($_GET['accao']){
     case "verTipoRegisto":
       if(isset($_GET['removeCampoID'])){
-        $tipo = new TipoRegisto($this->user->userid, $_GET['tid']);
+        $tipo = new TipoRegisto($this->user->userid,
+                                $_GET['tid']);
         $tipo->removeCampo($_GET['removeCampoID']);
         $this->addSuccessMessage("Campo removido com sucesso");
       }
@@ -11,13 +13,15 @@ if($_GET['page'] == "tiposRegisto" && isset($_GET['accao'])){
     case "inserir":
       if(isset($_POST['nomeTipo'])){
         $this->user->adicionaTipoRegisto($_POST['nomeTipo']);
-        $this->addSuccessMessage("Tipo de registo adicionado com sucesso");
+        $this->addSuccessMessage(
+          "Tipo de registo adicionado com sucesso");
       }
       break;
     case "remove":
       if(isset($_GET['tid'])){
         $this->user->removeTipoRegisto($_GET['tid']);
-        $this->addSuccessMessage("Tipo de registo removido com sucesso");
+        $this->addSuccessMessage(
+          "Tipo de registo removido com sucesso");
         $this->user->reloadTipos();
       }
       break;

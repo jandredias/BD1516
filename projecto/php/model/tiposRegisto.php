@@ -3,7 +3,8 @@
   $accao = (isset($_GET['accao'])) ? $_GET['accao'] : "list";
   switch($accao){
     case "verTipoRegisto":
-        $tipoRegisto = new TipoRegisto($this->user->userid, $_GET['tid']);
+        $tipoRegisto = new TipoRegisto($this->user->userid,
+                                       $_GET['tid']);
       break;
     default:
       break;

@@ -17,16 +17,22 @@ class App{
     $this->password = Configuration::$password;
     $this->database = Configuration::$database;
     try{
-      $connection = new PDO("mysql:host=".$this->server.";dbname=".$this->database, $this->username, $this->password);
-      $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $connection = new PDO("mysql:host=".$this->server.
+                            ";dbname=".$this->database,
+                            $this->username, $this->password);
+      $connection->setAttribute(PDO::ATTR_ERRMODE,
+                                PDO::ERRMODE_EXCEPTION);
     }catch(PDOException $e){
-      header('location: index.php?page=exception&message='.$e->getMessage());
+      header('location: index.php?page=exception&message='.
+             $e->getMessage());
     }
     session_start();
     if(isset($_SESSION['username'])){
       $this->login($_SESSION['username']);
     }
-    $this->messages = array("warning" => array(), "success" => array(), "error" => array());
+    $this->messages = array("warning" => array(),
+                            "success" => array(),
+                            "error" => array());
   }
 
   public function close(){
@@ -46,16 +52,6 @@ class App{
     }
     if(isset($_GET['page']) && $_GET['page'] == "logging"){
       $this->login($_POST['username'], $_POST['password']);
-    }
-    /*
-    if(!isset($_SESSION['username']) && !isset($_GET['page']) && !(isset($_POST['username']) && isset($_POST['username']))){
-      echo "DESTROY 2"; fflush();
-      $this->destroySession();
-      header('location: index.php?page=login');
-      return;
-    }*/
-    if(!isset($_GET['page']) && isset($_POST['username']) && isset($_POST['username'])){
-
     }
     include("controller/".$_GET['page'].".php");
     include("model/".$_GET['page'].".php");

@@ -15,7 +15,9 @@ class Campo{
              ativo=1 AND
              typecnt=:typecnt AND
              campocnt=:campocnt");
-    $query->execute(array(':userid' => $userid, ':typecnt' => $typecnt, ':campocnt' => $campocnt));
+    $query->execute(array(':userid' => $userid, 
+                          ':typecnt' => $typecnt,
+                          ':campocnt' => $campocnt));
     $result = $query->fetch();
     $this->typecnt  = $typecnt;
     $this->userid   = $userid;
